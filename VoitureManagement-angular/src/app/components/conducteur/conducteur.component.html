@@ -1,0 +1,129 @@
+<div class="records table-responsive">
+    <div class="record-header">
+      <div class="add">
+        <span>Entries</span>
+        <select name="" id="">
+          <option value="">ID</option>
+        </select>
+        <button (click)="toggleForm()">Ajouter Conducteur</button>
+      </div>
+  
+      <div class="browse">
+        <input type="search" placeholder="Search" class="record-search">
+        <select name="" id="">
+          <option value="">Status</option>
+        </select>
+      </div>
+    </div>
+  
+    <table width="100%">
+      <thead>
+        <tr>
+          <th><span class="las la-sort"></span>NOM</th>
+          <th><span class="las la-sort"></span>PRENOM</th>
+          <th><span class="las la-sort"></span>DATE NAISSANCE</th>
+          <th><span class="las la-sort"></span>TÉLÉPHONE</th>
+          <th><span class="las la-sort"></span>ADRESSE</th>
+          <th><span class="las la-sort"></span>NUMÉRO PERMIS</th>
+          <th><span class="las la-sort"></span>DATE DÉLIVRANCE</th>
+          <th><span class="las la-sort"></span>DATE EXPIRATION</th>
+          <th><span class="las la-sort"></span>TYPE PERMIS</th>
+          <th><span class="las la-sort"></span>DÉBUT EMPLOI</th>
+          <th><span class="las la-sort"></span>STATUT EMPLOI</th>
+          <th><span class="las la-sort"></span>MATRICULE VÉHICULE</th>
+          <th><span class="las la-sort"></span>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let conducteur of conducteur$ | async">
+          <td>{{ conducteur.nom }}</td>
+          <td>{{ conducteur.prenom }}</td>
+          <td>{{ conducteur.dateNaissance }}</td>
+          <td>{{ conducteur.NumeroTelephone }}</td>
+          <td>{{ conducteur.adresse }}</td>
+          <td>{{ conducteur.numeroPermis }}</td>
+          <td>{{ conducteur.dateDelivrancePermis }}</td>
+          <td>{{ conducteur.dateExpirationPermis }}</td>
+          <td>{{ conducteur.typePermis }}</td>
+          <td>{{ conducteur.dateDebutEmploi }}</td>
+          <td>{{ conducteur.statutEmploi }}</td>
+          <td>{{ conducteur.vehiculeAssigneId.plaqueImmatriculation }}</td>
+          <td>
+            <div class="actions">
+              <span class="las la-trash" title="Supprimer" (click)="deleteConducteur(conducteur.id)"></span>
+              <span class="las la-edit" title="Mettre à jour" (click)="editConducteur(conducteur)"></span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="form-container" *ngIf="showForm">
+    <div id="close-form-info" class="fas fa-times" (click)="closeForm()"></div>
+    <h2>{{ isEditing ? "Mettre à jour Conducteur" : "Ajouter un Conducteur" }}</h2>
+    <form [formGroup]="conducteurForm" (ngSubmit)="addConducteur()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="nom">Nom <span>*</span></label>
+            <input type="text" id="nom" formControlName="nom" required class="box">
+          </div>
+          <div class="form-group">
+            <label for="prenom">Prénom <span>*</span></label>
+            <input type="text" id="prenom" formControlName="prenom" required class="box">
+          </div>
+          <div class="form-group">
+            <label for="dateNaissance">Date de Naissance <span>*</span></label>
+            <input type="date" id="dateNaissance" formControlName="dateNaissance" required class="box">
+          </div>
+          <div class="form-group">
+            <label for="numeroTelephone">Numéro de Téléphone <span>*</span></label>
+            <input type="tel" id="numeroTelephone" formControlName="numeroTelephone" required class="box">
+          </div>
+          <div class="form-group">
+            <label for="adresse">Adresse <span>*</span></label>
+            <input type="text" id="adresse" formControlName="adresse" required class="box">
+          </div>
+          <div class="form-group">
+            <label for="email">Email <span>*</span></label>
+            <input type="email" id="email" formControlName="email" required class="box">
+          </div>
+          <div class="form-group">
+            <label for="numeroPermis">Numéro de Permis <span>*</span></label>
+            <input type="text" id="numeroPermis" formControlName="numeroPermis" required class="box">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="dateDelivrancePermis">Date de Délivrance du Permis <span>*</span></label>
+            <input type="date" id="dateDelivrancePermis" formControlName="dateDelivrancePermis" required class="box">
+          </div>
+          <div class="form-group">
+            <label for="dateExpirationPermis">Date d'Expiration du Permis <span>*</span></label>
+            <input type="date" id="dateExpirationPermis" formControlName="dateExpirationPermis" required class="box">
+          </div>
+          <div class="form-group">
+            <label for="typePermis">Type de Permis <span>*</span></label>
+            <input type="text" id="typePermis" formControlName="typePermis" required class="box">
+          </div>
+          <div class="form-group">
+            <label for="dateDebutEmploi">Date de Début d'Emploi <span>*</span></label>
+            <input type="date" id="dateDebutEmploi" formControlName="dateDebutEmploi" required class="box">
+          </div>
+          <div class="form-group">
+            <label for="statutEmploi">Statut de l'Emploi <span>*</span></label>
+            <input type="text" id="statutEmploi" formControlName="statutEmploi" required class="box">
+          </div>
+          <div class="form-group">
+            <label for="vehiculeAssigneId">Véhicule Assigné</label>
+            <select id="vehiculeAssigneId" formControlName="vehiculeAssigneId" class="box">
+              <option *ngFor="let vehicule of vehicule$ | async" [ngValue]="vehicule">{{ vehicule.plaqueImmatriculation }}</option>
+            </select>            
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn">{{ isEditing ? "Mettre à jour" : "Ajouter" }}</button>
+    </form>
+  </div>
+  

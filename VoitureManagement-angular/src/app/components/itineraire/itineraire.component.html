@@ -1,0 +1,103 @@
+<div class="records table-responsive">
+    <div class="record-header">
+        <div class="add">
+            <span>Entries</span>
+            <select name="" id="">
+                <option value="">ID</option>
+            </select>
+            <button (click)="toggleForm()">Ajouter Itinéraire</button>
+        </div>
+        <div class="browse">
+            <input type="search" placeholder="Search" class="record-search">
+            <select name="" id="">
+                <option value="">Status</option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th><span class="las la-sort"></span> ORIGINE</th>
+                    <th><span class="las la-sort"></span> DESTINATION</th>
+                    <th><span class="las la-sort"></span> DISTANCE</th>
+                    <th><span class="las la-sort"></span> DURÉE</th>
+                    <th><span class="las la-sort"></span> DATE DÉPART</th>
+                    <th><span class="las la-sort"></span> DATE ARRIVÉE</th>
+                    <th><span class="las la-sort"></span> MATRICULE</th>
+                    <th><span class="las la-sort"></span> NOM</th>
+                    <th><span class="las la-sort"></span> PRÉNOM</th>
+                    <th><span class="las la-sort"></span> NUMÉRO PERMIS</th>
+                    <th><span class="las la-sort"></span> ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let itineraire of itineraire$|async">
+                    <td>{{itineraire.origine}}</td>
+                    <td>{{itineraire.destination}}</td>
+                    <td>{{itineraire.distance}}</td>
+                    <td>{{itineraire.duree}}</td>
+                    <td>{{itineraire.dateDepart}}</td>
+                    <td>{{itineraire.dateArrivee}}</td>
+                    <td>{{itineraire.conducteurId.vehiculeAssigneId.plaqueImmatriculation}}</td>
+                    <td>{{itineraire.conducteurId.nom}}</td>
+                    <td>{{itineraire.conducteurId.prenom}}</td>
+                    <td>{{itineraire.conducteurId.numeroPermis}}</td>
+                    <td>
+                        <div class="actions">
+                            <span class="las la-trash" title="Supprimer" (click)="deleteItineraire(itineraire.id)"></span>
+                            <span class="las la-edit" title="Mettre à jour" (click)="editItineraire(itineraire)"></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Other rows with corrected data -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Form HTML -->
+<div class="form-container" *ngIf="showForm">
+    <div id="close-form-info" class="fas fa-times" (click)="closeForm()"></div>
+    <h2>{{ isEditing ? "Mettre à jour Itineraire" : "Ajouter Itineraire" }}</h2>
+    <form [formGroup]="itineraireForm" (ngSubmit)="addItineraire()">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="origine">Origine <span>*</span></label>
+                    <input type="text" id="origine" formControlName="origine" required class="box">
+                </div>
+                <div class="form-group">
+                    <label for="destination">Destination <span>*</span></label>
+                    <input type="text" id="destination" formControlName="destination" required class="box">
+                </div>
+                <div class="form-group">
+                    <label for="distance">Distance <span>*</span></label>
+                    <input type="text" id="distance" formControlName="distance" class="box">
+                </div>
+                <div class="form-group">
+                    <label for="duree">Durée <span>*</span></label>
+                    <input type="text" id="duree" formControlName="duree" class="box">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="depart">Date de Départ <span>*</span></label>
+                    <input type="date" id="depart" formControlName="dateDepart" class="box">
+                </div>
+                <div class="form-group">
+                    <label for="fin">Date de Fin <span>*</span></label>
+                    <input type="date" id="fin" formControlName="dateArrivee" class="box">
+                </div>
+                
+                <div class="form-group">
+                    <label for="conducteurId">Matricule vehicule</label>
+                    <select id="conducteurId" formControlName="conducteurId" class="box">
+                      <option *ngFor="let conducteur of conducteur$ | async" [ngValue]="conducteur">{{ conducteur.vehiculeAssigneId.plaqueImmatriculation }}</option>
+                    </select>            
+                  </div>
+            </div>
+        </div>
+        <button type="submit" class="btn">{{isEditing? "Mettre a jour":"Ajouter"}}</button>
+    </form>
+</div>

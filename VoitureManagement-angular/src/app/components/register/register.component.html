@@ -1,0 +1,32 @@
+<!-- Formulaire -->
+<form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+  <div class="form-group">
+    <label for="nom">Nom</label>
+    <input type="text" id="nom" formControlName="nom" required class="box" />
+  </div>
+  <div class="form-group">
+    <label for="prenom">Prenom</label>
+    <input type="text" id="prenom" formControlName="prenom" required class="box" />
+  </div>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" id="username" formControlName="username" required class="box" />
+  </div>
+  <div class="form-group">
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password" formControlName="motDePasse" required class="box" />
+  </div>
+  <div class="form-group">
+    <label for="cpassword">Confirmer Mot de passe</label>
+    <input type="password" id="cpassword" formControlName="cpassword" required class="box" />
+  </div>
+  <div class="form-group">
+    <label for="role">Select Role</label>
+    <select id="role" formControlName="role" required class="box">
+      <option value="" disabled selected>Select your role</option>
+      <option value="Admin">Admin</option>
+      <option value="Gestionnaire">Gestionnaire</option>
+    </select>
+  </div>
+  <button type="submit" class="btn">S'inscrire</button>
+</form>

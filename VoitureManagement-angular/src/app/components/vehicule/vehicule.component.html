@@ -1,0 +1,92 @@
+<div class="records table-responsive">
+    <div class="record-header">
+        <div class="add">
+            <span>Entries</span>
+            <select name="" id="">
+                <option value="">ID</option>
+            </select>
+            <button (click)="toggleForm()">Ajouter Véhicule</button>
+        </div>
+
+        <div class="browse">
+            <input type="search" placeholder="Search" class="record-search">
+            <select name="" id="">
+                <option value="">Status</option>
+            </select>
+        </div>
+    </div>
+
+    <div>
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th><span class="las la-sort"></span> Marque</th>
+                    <th><span class="las la-sort"></span> MODELE</th>
+                    <th><span class="las la-sort"></span> IMMATRICULATION</th>
+                    <th><span class="las la-sort"></span> DATE D'ACHAT</th>
+                    <th><span class="las la-sort"></span> TYPE</th>
+                    <th><span class="las la-sort"></span> ETAT</th>
+                    <th><span class="las la-sort"></span> ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let vehicule of vehicule$ | async">
+                    <td>{{ vehicule.marque }}</td>
+                    <td>{{ vehicule.modele }}</td>
+                    <td>{{ vehicule.plaqueImmatriculation }}</td>
+                    <td>{{ vehicule.dateAchat }}</td>
+                    <td>{{ vehicule.type }}</td>
+                    <td>{{ vehicule.etat }}</td>
+                    <td>
+                        <div class="actions">
+                            <span class="las la-trash" title="Supprimer" (click)="deleteVehicule(vehicule.id)"></span>
+                            <span class="las la-edit" title="Mettre à jour" (click)="editVehicule(vehicule)"></span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-container" *ngIf="showForm">
+        <div id="close-form-info" class="close-btn" (click)="closeForm()">×</div>
+        <h2>{{ isEditing ? 'Mettre à jour Véhicule' : 'Ajouter Véhicule' }}</h2>
+        <form [formGroup]="vehiculeForm" (ngSubmit)="addVehicule()">
+            <div class="form-group">
+                <label for="marque">Marque <span>*</span></label>
+                <input type="text" id="marque" formControlName="marque" placeholder="Enter the Marque" required class="box">
+            </div>
+            <div class="form-group">
+                <label for="model">Modele <span>*</span></label>
+                <input type="text" id="model" formControlName="modele" placeholder="Enter the Modele" required class="box">
+            </div>
+            <div class="form-group">
+                <label for="Plaque">Numero Plaque <span>*</span></label>
+                <input type="text" id="plaque" formControlName="plaqueImmatriculation" placeholder="Enter the number of the plaque" required class="box">
+            </div>
+            <div class="form-group">
+                <label for="date">Date D'achat<span>*</span></label>
+                <input type="date" id="date" formControlName="dateAchat" required class="box">
+            </div>
+            <div class="form-group">
+                <label for="type">Select Type <span>*</span></label>
+                <select id="type" required class="box" formControlName="type">
+                    <option value="" disabled>Select the type</option>
+                    <option value="SUV">SUV</option>
+                    <option value="BERLINE">BERLINE</option>
+                    <option value="CAMION">CAMION</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="etat">Select Etat <span>*</span></label>
+                <select id="etat" required class="box" formControlName="etat">
+                    <option value="" disabled>Select the state</option>
+                    <option value="Neuf">Neuf</option>
+                    <option value="Occasion">Occasion</option>
+                </select>
+            </div>
+            <input type="submit" value="{{ isEditing ? 'Mettre à jour' : 'Enregistrer' }}" class="btn">
+        </form>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="records table-responsive">
+    <div class="record-header">
+        <div class="add">
+            <span>Entries</span>
+            <select name="" id="">
+                <option value="">ID</option>
+            </select>
+            <button (click)="toggleForm()">Ajouter Maintenance</button>
+        </div>
+
+        <div class="browse">
+            <input type="search" placeholder="Search" class="record-search">
+            <select name="" id="">
+                <option value="">Status</option>
+            </select>
+        </div>
+    </div>
+
+    <div>
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th><span class="las la-sort"></span> DATE</th>
+                    <th><span class="las la-sort"></span> DESCRIPTION</th>
+                    <th><span class="las la-sort"></span> COUT</th>
+                    <th><span class="las la-sort"></span> MARQUE</th>
+                    <th><span class="las la-sort"></span> MODELE</th>
+                    <th><span class="las la-sort"></span> MATRICULE</th>
+                    <th><span class="las la-sort"></span> ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let maintenance of maintenance$ |async">
+                    <td>{{maintenance.date}}</td>
+                    <td>{{maintenance.description}}</td>
+                    <td>{{maintenance.cout}}</td>
+                    <td>{{maintenance.vehiculeId.marque}}</td>
+                    <td>{{maintenance.vehiculeId.modele}}</td>
+                    <td>{{maintenance.vehiculeId.plaqueImmatriculation}}</td>
+                    <td>
+                        <div class="actions">
+                            <span class="las la-trash" title="Supprimer" (click)="deleteMaintenance(maintenance.id)"></span>
+                            <span class="las la-edit" title="Mettre à jour" (click)="editMaintenance(maintenance)"></span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-container" *ngIf="showForm">
+        <div id="close-form-info" class="close-btn" (click)="closeForm()" >×</div>
+        <h2>{{ isEditing ? "Mettre à jour Maintenance" : "Ajouter Maintenance" }}</h2>
+        <form [formGroup]="MaintenanceForm" (ngSubmit)="addMaintenance()">
+            <div class="form-group">
+            <label for="vehiculeId">Matricule vehicule</label>
+            <select id="vehiculeId" formControlName="vehiculeId" class="box">
+              <option *ngFor="let vehicule of vehicule$ | async" [ngValue]="vehicule">{{ vehicule.plaqueImmatriculation }}</option>
+            </select>            
+          </div>
+            <div class="form-group">
+                <label for="date">Date <span>*</span></label>
+                <input type="date" id="date" formControlName="date" required class="box">
+            </div>
+            <div class="form-group">
+                <label for="price">Cout <span>*</span></label>
+                <input type="text" id="price" formControlName="cout" placeholder="Enter the Price" required class="box">
+            </div>
+            <div class="form-group">
+                <label for="description">Description <span>*</span></label>
+                <textarea id="description" formControlName="description" class="box" placeholder="description" required></textarea>
+            </div>
+            <button type="submit" class="btn">{{ isEditing ? "Mettre à jour" : "Ajouter" }}</button>
+        </form>
+    </div>
+    

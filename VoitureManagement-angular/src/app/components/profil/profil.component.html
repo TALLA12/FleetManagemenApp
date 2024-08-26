@@ -1,0 +1,63 @@
+<div class="records table-responsive">
+
+  <div class="record-header">
+      <div class="add">
+          <span>Entries</span>
+          <select name="" id="">
+              <option value="">ID</option>
+          </select>
+          <button>Add record</button>
+      </div>
+
+      <div class="browse">
+         <input type="search" placeholder="Search" class="record-search">
+          <select name="" id="">
+              <option value="">Status</option>
+          </select>
+      </div>
+  </div>
+
+  <div>
+      <table width="100%">
+          <thead>
+            <tr>
+              <th><span class="las la-sort"></span> PROFIL</th>
+              <th><span class="las la-sort"></span> NOM</th>
+              <th><span class="las la-sort"></span> PRENOM</th>
+              <th><span class="las la-sort"></span> USERNAME</th>
+              <th><span class="las la-sort"></span> ROLE</th>
+              <th><span class="las la-sort"></span> STATUT</th>
+              <th><span class="las la-sort"></span> ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users$ | async">
+              <td>
+                <div class="client">
+                  <div class="client-img bg-img" style="background-image: url(img/3.jpeg)"></div>
+                  <div class="client-info">
+                    <h4>{{user.nom}} {{user.prenom}}</h4>
+                  </div>
+                </div>
+              </td>
+              <td>{{user.nom}}</td>
+              <td>{{user.prenom}}</td>
+              <td>{{user.username}}</td>
+              <td>{{user.role}}</td>
+              <td>
+                <h4>{{user.status}}</h4>
+              </td>
+              <td>
+                <div class="actions">
+                  <span class="las la-trash" title="Supprimer" (click)="deleteAccount(user.id)"></span>
+                  <span class="las" [ngClass]="{'la-toggle-on': user.status === 'ACTIVE', 'la-toggle-off': user.status === 'INACTIVE'}" 
+                        title="Activer/Désactiver" 
+                        (click)="toggleAccount(user)">
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  </div>
+</div>

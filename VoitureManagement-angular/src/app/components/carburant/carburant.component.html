@@ -1,0 +1,78 @@
+<div class="records table-responsive">
+    <div class="record-header">
+        <div class="add">
+            <span>Entries</span>
+            <select name="" id="">
+                <option value="">ID</option>
+            </select>
+            <button (click)="toggleForm()">Ajouter carburant</button>
+        </div>
+
+        <div class="browse">
+            <input type="search" placeholder="Search" class="record-search">
+            <select name="" id="">
+                <option value="">Status</option>
+            </select>
+        </div>
+    </div>
+
+    <div>
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th><span class="las la-sort"></span> DATE D'ACHAT</th>
+                    <th><span class="las la-sort"></span> QUANTITE</th>
+                    <th><span class="las la-sort"></span> PRIX</th>
+                    <th><span class="las la-sort"></span> TOTAL</th>
+                    <th><span class="las la-sort"></span> MATRICULE</th>
+                    <th><span class="las la-sort"></span> ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let carburant of carburant$|async">
+                    <td>{{carburant.date}}</td>
+                    <td>{{carburant.quantite}}</td>
+                    <td>{{carburant.prix}}</td>
+                    <td>{{carburant.total}}</td>
+                    <td>{{carburant.vehiculeId.plaqueImmatriculation}}</td>
+                    <td>
+                        <div class="actions">
+                            <span class="las la-trash" title="Supprimer" (click)="deleteCarburant(carburant.id)"></span>
+                            <span class="las la-edit" title="Mettre à jour" (click)="editCarburant(carburant)"></span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-container" *ngIf="showForm">
+        <div id="close-form-info" class="fas fa-times" (click)="closeForm()"></div>
+        <h2>{{ isEditing ? "Mettre à jour Conducteur" : "Ajouter un Conducteur" }}</h2>
+        <form [formGroup]="fuelForm" (ngSubmit)="addCarburant()">
+            <div class="form-group">
+                <label for="dateAchat">Date d'achat <span>*</span></label>
+                <input type="date" id="dateAchat" formControlName="date" required class="box">
+            </div>
+            <div class="form-group">
+                <label for="quantite">Quantité (litres) <span>*</span></label>
+                <input type="number" id="quantite" formControlName="quantite" required class="box" (input)="calculateTotal()">
+            </div>
+            <div class="form-group">
+                <label for="prix">Prix par litre <span>*</span></label>
+                <input type="number" step="0.01" id="prix" formControlName="prix" required class="box" (input)="calculateTotal()">
+            </div>
+            <div class="form-group">
+                <label for="total">Total <span>*</span></label>
+                <input type="number" step="0.01" id="total" formControlName="total" required class="box" readonly>
+            </div>
+            <div class="form-group">
+                <label for="vehiculeId">Véhicule Assigné</label>
+                <select id="vehiculeId" formControlName="vehiculeId" class="box">
+                  <option *ngFor="let vehicule of vehicule$ | async" [ngValue]="vehicule">{{ vehicule.plaqueImmatriculation }}</option>
+                </select>            
+              </div>
+              <button type="submit" class="btn">{{ isEditing ? "Mettre à jour" : "Ajouter" }}</button>
+        </form>
+    </div>
+</div>
