@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/transport
+    username: root
+    password: Ab2085074#
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+app:
+  secret-key: 01234567890123456789012345678901
+  expiration-time: 86400000
+
+project:
+  image: images/
+
+base:
+  url: "http://localhost:8080"
